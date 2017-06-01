@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block title %}聊天室{% endblock %}
+{% block head %}
+{% parent %}
+<script src="http://cdn.bootcss.com/socket.io/2.0.1/socket.io.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+{% endblock %}
+{% block content %}
+    <ul id="messages">
+        
+    </ul>
+    <form action="" method="post">
+        <input id="m"></input>
+        <button>发表</button> 
+    </form>
+    
+    <script type="text/javascript">
+        $(function () {
+            var socket = io();
+            $('form').submit(function(){
+              socket.emit('chat message', $('#m').val());
+              $('#m').val('');
+              return false;
+            });
+
+            socket.on('chat message', function(msg){
+                $('#messages').append($('<li>').text(msg));
+            });
+          });
+    </script>
+{% endblock %}
